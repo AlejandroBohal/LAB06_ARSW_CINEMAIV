@@ -1,7 +1,7 @@
 
 apimock = (function () {
 
-    var seats = [[false, false, false, false, false, false, false, false, false, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true]];
+    var seats = [[true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true], [true, true, true, true, true, true, true, true, true, true, true, true]];
     var mockdata = [];
 	var function1W = {"movie": {"name": "Your Name", "genre": "Drama"}, "seats": seats, "date": "2016-08-25 10:20"};
 	var function2W = {"movie": {"name": "A Silence Voice", "genre": "Drama"}, "seats": seats, "date": "2015-09-01 16:20"};

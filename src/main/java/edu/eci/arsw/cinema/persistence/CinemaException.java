@@ -15,8 +15,4 @@ public class CinemaException extends Exception{
         super(message);
     }
 
-    public CinemaException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    
 }

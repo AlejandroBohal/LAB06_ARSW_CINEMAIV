@@ -22,11 +22,23 @@ public class CinemaFunction {
     private String date;
     
     public CinemaFunction(){}
-    
     public CinemaFunction(Movie movie, String date){
         this.movie=movie;
         this.date=date;
-        List<List<Boolean>> seats =new ArrayList<>();
+        List<List<Boolean>> seats = new ArrayList<>();
+        for (int i=0;i<7;i++){
+            List<Boolean> row= new ArrayList<>(Arrays.asList(new Boolean[12]));
+            for(int j=0;j<12;j++){
+                row.set(j,true);
+            }
+            seats.add(row);
+        }
+        this.seats = seats;
+
+    }
+    public CinemaFunction(Movie movie, String date,List<List<Boolean>> seats){
+        this.movie=movie;
+        this.date=date;
         for (int i=0;i<7;i++){
             List<Boolean> row= new ArrayList<>(Arrays.asList(new Boolean[12]));
             for(int j=0;j<12;j++){
