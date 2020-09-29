@@ -13,11 +13,11 @@ apiclient = (function () {
                 callback(data);
             },null)
         },
-        buyTicket: function (row,col,name,date,movieName,callback) {
-                    $.getJSON(url+name+"/"+date+"/"+movieName+"/"+row+"/"+col,(data)=>{
-                        callback(data);
-                    },null)
-                },
+        buyTicket: function (name,date,movieName,row,col,callback) {
+            $.getJSON(url+name+"/"+date+"/"+movieName+"/"+row+"/"+col,(data)=>{
+                callback(data);
+            },null)
+        },
     }
 
 })();

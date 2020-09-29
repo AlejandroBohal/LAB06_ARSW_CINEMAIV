@@ -4,9 +4,11 @@
 
 En este repositorio se hara la implementación de clientes pesados con javascript y la libreria jquery, además se conectará la api rest implementada en los laboratorios pasados y corregida en este.
 
+
 #### Integrantes
-- Sergio Alejandro Bohórquez Alzate
-- Juan Carlos Garcia Garzón
+
+* **Sergio Alejandro Bohórquez Alzate** - *Initial work* - [AlejandroBohal](https://github.com/AlejandroBohal)
+* **Juan Carlos García** - *Initial work* - [IJuanchoG](https://github.com/IJuanchoG)
 
 ### Pre requisitos
 
@@ -60,7 +62,14 @@ Imágen de pruebas corriendo:
 
 ![](https://media.discordapp.net/attachments/352624122301513730/758257505129201734/unknown.png?width=717&height=260)
 
+## Built With
 
+* [IntelliJ](https://www.jetbrains.com/es-es/idea/) - The develop enviroment
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [JUnit](https://junit.org/junit5/) - Used to generate Unitary Test
 
+## License
+
+Este proyecto es de libre uso y distribución, para más detalles vea el archivo [LICENSE.md](LICENSE.md).
 
 

@@ -52,11 +52,11 @@ let app = ( () =>{
         changeCinemaName(newCinema){cinemaName=newCinema},
         changeDate(newDate){date = newDate},
         getSeats(name,date,functionName){
-            document.getElementById('buyTicket').innerHTML+=
+            document.getElementById('buyTicket').innerHTML =
                 '<label>Asiento</label>'
                     +'<input type="text" id="x" placeholder="Numero de Fila" name="Fila">'
                     +'<input type="text" id="y" placeholder="Numero Columna" name="Columna">'
-                    +'<button type="button" onclick="app.buyTicket(\'${name}\',\'${date}\',\'${functionName}\',\'$(#x)\',\'$(#y)\')"'
+                    +'<button type="button" onclick="app.buyTicket('${name}','${date}','${functionName}',$(\'#x\').val(),$(\'#y\').val())"'
                             +'class="btn btn-warning">Comprar'
                     +'</button>';
 
@@ -78,11 +78,14 @@ let app = ( () =>{
             $('#seleccionado').text(`Cine seleccionado: ${cinemaName}`);
             service.getFunctionsByCinemaAndDate(cinema,date,mapToObjects)
         },
+        buyTicket(name, date,movieName,row,col){
+        service.buyTicket(name,date,movieName,row,col,(funcion) =>{
 
-        buyTicket(row, col,cinema,date, movieName){
-            service.buyTicket(row, col, cinema,date,(funcion) =>{
+            if(funcion.movie.name === functionName){
                 draw(funcion.seats);
-            })
+            }
+
+        })
         }
         }
 
