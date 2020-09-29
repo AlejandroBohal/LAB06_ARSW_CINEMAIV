@@ -1,5 +1,5 @@
 
-# LAB5 - CINEMA-PART III
+# LAB6 - CINEMA-PART IV
 ### Descripción
 
 En este repositorio se hara la implementación de clientes pesados con javascript y la libreria jquery, además se conectará la api rest implementada en los laboratorios pasados y corregida en este.
