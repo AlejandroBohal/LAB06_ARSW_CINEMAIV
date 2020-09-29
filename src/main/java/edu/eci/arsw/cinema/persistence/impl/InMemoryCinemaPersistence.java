@@ -44,22 +44,26 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         cinemas.put("cinemaF", this.getCinemaF());
     }
     @Override
-    public void buyTicket(int row, int col, String cinema, String date, String movieName) throws CinemaException {
+    public CinemaFunction buyTicket(int row, int col, String cinema, String date, String movieName) throws CinemaException {
         Cinema cinemaTicket = this.cinemas.get(cinema);
         List<CinemaFunction> functionsOfOurCinema=cinemaTicket.getFunctions();
+        CinemaFunction cfUpdated = null;
         boolean functionFound=false;
         for (CinemaFunction cf: functionsOfOurCinema) {
             if(cf.getMovie().getName().equals(movieName) && cf.getDate().contains(date)){
                 cf.buyTicket(row,col);
                 functionFound=true;
+                cfUpdated = cf;
+                break;
             }
         }
         if (!functionFound){
             throw new CinemaException("No se encontraron funciones con los parametros indicados.");
-        }
+        } return cfUpdated;
+
     }
     @Override
-    public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) throws CinemaPersistenceException {
+    public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date){
         List<CinemaFunction> functions = new LinkedList<>();
         Cinema cinemaTicket = this.cinemas.get(cinema);
         List<CinemaFunction> functionsOfOurCinema=cinemaTicket.getFunctions();
@@ -67,9 +71,6 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
             if(cf.getDate().contains(date)){
                functions.add(cf);
             }
-        }
-        if (functions.size() ==0){
-            throw new CinemaPersistenceException("Not functions found");
         }
         return functions;
     }
@@ -117,6 +118,15 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
             throw new CinemaPersistenceException("Cinema not found");
         }else{
             Cinema cinema = cinemas.get(name);
+            List<List<Boolean>> seats =new ArrayList<>();
+            for (int i=0;i<7;i++){
+                List<Boolean> row= new ArrayList<>(Arrays.asList(new Boolean[12]));
+                for(int j=0;j<12;j++){
+                    row.set(j,true);
+                }
+                seats.add(row);
+            }
+            function.setSeats(seats);
             cinema.getFunctions().add(function);
             return function;
         }
@@ -130,11 +140,11 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         }
         List<CinemaFunction> functions = cinema.getFunctions();
         for (CinemaFunction f : functions) {
-            if (f.getMovie().getName().equals(function.getMovie().getName())) {
+            if (f.getMovie().getName().equals(function.getMovie().getName())
+                    && f.getDate().split(" ")[0].equals(function.getDate().split(" ")[0])) {
                 updatedFunction = f;
                 f.setDate(function.getDate());
                 f.setMovie(function.getMovie());
-                f.setSeats(function.getSeats());
             }
         }
         if (updatedFunction == null) {
@@ -147,12 +157,19 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
     public void addCinema(Cinema c) {
         cinemas.put(c.getName(),c);
     }
-
-    private void updateFunction(CinemaFunction cf, CinemaFunction function) {
-        cf.setDate(function.getDate());
-        cf.setMovie(function.getMovie());
-        cf.setSeats(function.getSeats());
+    @Override
+    public void deleteFunctionByCinemaDateAndMovieName(String name,String date,String moviename) throws CinemaPersistenceException{
+        Cinema cinema = null;
+        cinema = getCinema(name);
+        List<CinemaFunction> functions = cinema.getFunctions();
+        for (CinemaFunction f : functions) {
+            if(f.getDate().contains(date) && f.getMovie().getName().equals(moviename)){
+                functions.remove(f);
+                break;
+            }
+        }
     }
+
     private Cinema getCinemaD() {
         String functionDate2 = "2020-12-18 15:30";
         List<CinemaFunction> functions= new ArrayList<>();

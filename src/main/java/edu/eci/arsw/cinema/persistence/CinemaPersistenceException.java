@@ -15,8 +15,5 @@ public class CinemaPersistenceException extends Exception{
         super(message);
     }
 
-    public CinemaPersistenceException(String message, Throwable cause) {
-        super(message, cause);
-    } 
     
 }

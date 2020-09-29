@@ -6,7 +6,9 @@
 package edu.eci.arsw.cinema.controllers;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import edu.eci.arsw.cinema.model.Cinema;
@@ -35,7 +37,7 @@ public class CinemaAPIController {
      * @return the response entity
      * @throws ResourceNotFoundException the resource not found exception
      */
-    @RequestMapping(value = "/cinemas",method = RequestMethod.GET)
+    @GetMapping(value = "/cinemas")
     public ResponseEntity<?> controllerGetResourceCinema() throws ResourceNotFoundException {
         try {
             Set<Cinema> data = cinemaServices.getAllCinemas();
@@ -52,7 +54,7 @@ public class CinemaAPIController {
      * @return the cinema by name
      * @throws ResourceNotFoundException the resource not found exception
      */
-    @RequestMapping( value = "/cinemas/{name}",method = RequestMethod.GET)
+    @GetMapping( value = "/cinemas/{name}")
     public ResponseEntity<?> getCinemaByName(@PathVariable String name) throws ResourceNotFoundException {
         try {
             Cinema data = cinemaServices.getCinemaByName(name);
@@ -70,13 +72,13 @@ public class CinemaAPIController {
      * @return the functions by name and date
      * @throws ResourceNotFoundException the resource not found exception
      */
-    @RequestMapping( value = "/cinemas/{name}/{date}",method = RequestMethod.GET)
-    public ResponseEntity<?> getFunctionsByNameAndDate(@PathVariable String name,@PathVariable String date) throws ResourceNotFoundException {
+    @GetMapping( value = "/cinemas/{name}/{date}")
+    public ResponseEntity<?> getFunctionsByNameAndDate(@PathVariable String name,@PathVariable String date){
         try {
             List<CinemaFunction> data = cinemaServices.getFunctionsByCinemaAndDate(name,date);
             return new ResponseEntity<>(data, HttpStatus.ACCEPTED);
-        } catch (CinemaPersistenceException e) {
-            throw  new ResourceNotFoundException(e.getMessage(),e);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -89,7 +91,7 @@ public class CinemaAPIController {
      * @return the functions by name and date and movie
      * @throws ResourceNotFoundException the resource not found exception
      */
-    @RequestMapping( value = "/cinemas/{name}/{date}/{moviename}",method = RequestMethod.GET)
+    @GetMapping( value = "/cinemas/{name}/{date}/{moviename}")
     public ResponseEntity<?> getFunctionsByNameAndDateAndMovie(@PathVariable String name,@PathVariable String date,@PathVariable String moviename) throws ResourceNotFoundException {
         try {
             CinemaFunction data = cinemaServices.getFunctionByCinemaAndDateAndMovie(name,date,moviename);
@@ -110,7 +112,7 @@ public class CinemaAPIController {
      * @return the response entity
      * @throws ResourceNotFoundException the resource not found exception
      */
-    @RequestMapping( value = "/cinemas/{name}/{date}/{moviename}/{row}/{col}",method = RequestMethod.GET)
+    @PostMapping( value = "/cinemas/{name}/{date}/{moviename}/{row}/{col}")
     public ResponseEntity<?> buyTicket(@PathVariable String name,@PathVariable String date,@PathVariable String moviename, @PathVariable int row, @PathVariable int col) throws ResourceNotFoundException {
         try {
             cinemaServices.buyTicket(row,col,name,date,moviename);
@@ -127,10 +129,9 @@ public class CinemaAPIController {
      * @param name     the name
      * @param function the function
      * @return the response entity
-     * @throws ResourceNotFoundException the resource not found exception
      */
-    @RequestMapping(value = "/cinemas/{name}",method = RequestMethod.POST )
-    public ResponseEntity<?> addFunctionToCinema(@PathVariable String name,@RequestBody CinemaFunction function) throws ResourceNotFoundException{
+    @PostMapping(value = "/cinemas/{name}")
+    public ResponseEntity<?> addFunctionToCinema(@PathVariable String name,@RequestBody CinemaFunction function) {
         try{
             CinemaFunction data = cinemaServices.addFunctionToCinema(name,function);
             return  new ResponseEntity<>(data,HttpStatus.CREATED);
@@ -138,22 +139,32 @@ public class CinemaAPIController {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
         }
     }
-
     /**
      * Update function by cinema response entity.
      *
      * @param name     the name
      * @param function the function
      * @return the response entity
-     * @throws ResourceNotFoundException the resource not found exception
      */
-    @RequestMapping(value = "/cinemas/{name}",method = RequestMethod.PUT )
-    public ResponseEntity<?> updateFunctionByCinema(@PathVariable String name,@RequestBody CinemaFunction function) throws ResourceNotFoundException{
+    @PutMapping(value = "/cinemas/{name}")
+    public ResponseEntity<?> updateFunctionByCinema(@PathVariable String name,@RequestBody CinemaFunction function) {
         try{
             CinemaFunction data = cinemaServices.updateFunctionByCinema(name,function);
             return new ResponseEntity<>(data,HttpStatus.CREATED);
         }catch (CinemaPersistenceException e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
+        }
+    }
+    @DeleteMapping(value="/cinemas/{name}/{date}/{moviename}")
+    public ResponseEntity<?> deleteFunctionByCinemaDateAndMovieName(@PathVariable String name,@PathVariable String date,@PathVariable String moviename){
+        Map<String,Object> response = new HashMap<>();
+        try{
+            cinemaServices.deleteFunctionByCinemaDateAndMovieName(name,date,moviename);
+            response.put("Mensaje","Eliminado correctamente");
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }catch (CinemaPersistenceException e){
+            response.put("Mensaje",e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
         }
     }
 
